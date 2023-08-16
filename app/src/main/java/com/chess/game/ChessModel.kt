@@ -1,6 +1,7 @@
 package com.chess.game
 
 import android.util.Log
+import kotlin.time.measureTime
 
 class ChessModel {
 
@@ -23,6 +24,10 @@ class ChessModel {
 
 
     fun movePiece(fromCol:Int,fromRow:Int,toCol:Int,toRow:Int){
+        if(fromCol==toCol && fromRow==toRow){
+             return
+        }
+
         val movingPiece= piaceAt(fromCol,fromRow)?:return
 
         piaceAt(toCol,toRow)?.let {
@@ -31,9 +36,9 @@ class ChessModel {
             }
             pieceBox.remove(it)
         }
+        pieceBox.remove(movingPiece)
+        pieceBox.add(ChessPiace(toCol,toRow,movingPiece.player,movingPiece.rank,movingPiece.resID))
 
-        movingPiece.col=toCol
-        movingPiece.row=toRow
 
 
 
