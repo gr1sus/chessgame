@@ -27,4 +27,10 @@ class MainActivity : AppCompatActivity(),chessDelegate {
     override fun piaceAt(col: Int, row: Int): ChessPiace? {
         return chessModel.piaceAt(col,row)
     }
+
+    override fun movePiece(fromCol: Int, fromRow: Int, toCol: Int, toRow: Int) {
+         chessModel.movePiece(fromCol,fromRow,toCol,toRow)
+        val chessView=findViewById<chessView>(R.id.chess_view)
+        chessView.invalidate()
+    }
 }
