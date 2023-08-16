@@ -3,6 +3,7 @@ package com.chess.game
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 
 
 const val TAG = "Andrii"
@@ -19,6 +20,12 @@ class MainActivity : AppCompatActivity(),chessDelegate {
 
 
         val chessView=findViewById<chessView>(R.id.chess_view)
+        val resetButton:Button= findViewById(R.id.reset_button)
+
+        resetButton.setOnClickListener {
+            chessModel.reset()
+            chessView.invalidate()
+        }
         chessView.chessDelegate=this
 
 
