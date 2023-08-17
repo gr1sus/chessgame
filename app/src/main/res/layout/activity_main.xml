@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:background="#F9F7F3"
     android:gravity="center"
-    android:orientation="vertical"
-    android:background="#F9F7F3">
+    android:orientation="vertical">
 
     <com.chess.game.chessView
         android:id="@+id/chess_view"
@@ -16,16 +16,45 @@
 
     </com.chess.game.chessView>
 
-
-    <Button
-        android:id="@+id/reset_button"
-        android:layout_width="133dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#F9F7F3"
+        android:gravity="center"
+        android:orientation="horizontal"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:text="@string/button_name"
-        android:backgroundTint="#48ACA7">
+        android:layout_marginTop="50dp">
 
-    </Button>
+        <Button
+            android:id="@+id/listen_button"
+            android:layout_width="133dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#48ACA7"
+            android:text="@string/button_listen">
+
+        </Button>
+
+        <Button
+            android:id="@+id/reset_button"
+            android:layout_width="133dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#48ACA7"
+            android:text="@string/button_reset">
+
+        </Button>
+
+        <Button
+            android:id="@+id/connect_button"
+            android:layout_width="133dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#48ACA7"
+            android:text="@string/button_connect">
+
+        </Button>
+
+    </LinearLayout>
 
 </LinearLayout>

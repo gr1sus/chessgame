@@ -107,10 +107,12 @@ class chessView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                 var toCol = ((event.x - originX) / cellSide).toInt()
                 var toRow = 7 - ((event.y - originY) / cellSide).toInt()
                 Log.d(TAG, "from($fromCol,$fromRow) to ($toCol,$toRow)")
+                if(fromCol!=toCol||fromRow!=toRow){
                 chessDelegate?.movePiece(fromCol, fromRow, toCol, toRow)
+                }
                 movingPiece = null
                 movingpieceBitmap = null
-
+                invalidate()
 
             }
         }

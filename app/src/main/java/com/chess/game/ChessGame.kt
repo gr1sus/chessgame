@@ -1,9 +1,6 @@
 package com.chess.game
 
-import android.util.Log
-import kotlin.time.measureTime
-
-class ChessModel {
+object ChessGame {
 
     var pieceBox= mutableSetOf<ChessPiace>()
 
