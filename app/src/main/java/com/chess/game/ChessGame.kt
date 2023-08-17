@@ -2,20 +2,13 @@ package com.chess.game
 
 object ChessGame {
 
-    var pieceBox= mutableSetOf<ChessPiace>()
+    var pieceBox= mutableSetOf<ChessPiece>()
 
 
 
     init{
        reset()
-    /*
-        //TODO
-        Log.d(TAG,"${pieceBox.size}")
-        movePiece(0,0,1,7)
-        movePiece(1,7,1,4)
-
-        Log.d(TAG,toString())
-        Log.d(TAG,"${pieceBox.size}")*/
+    
     }
 
 
@@ -25,20 +18,16 @@ object ChessGame {
              return
         }
 
-        val movingPiece= piaceAt(fromCol,fromRow)?:return
+        val movingPiece= pieceAt(fromCol,fromRow)?:return
 
-        piaceAt(toCol,toRow)?.let {
+        pieceAt(toCol,toRow)?.let {
             if (it.player==movingPiece.player){
                 return
             }
             pieceBox.remove(it)
         }
         pieceBox.remove(movingPiece)
-        pieceBox.add(ChessPiace(toCol,toRow,movingPiece.player,movingPiece.rank,movingPiece.resID))
-
-
-
-
+        pieceBox.add(movingPiece.copy(col=toCol,row=toRow))
 
     }
 
@@ -49,27 +38,27 @@ object ChessGame {
         pieceBox.removeAll(pieceBox)
 
         for (i in 0..1){
-            pieceBox.add(ChessPiace(0+i*7,0,ChessPlayer.WHITE,ChessRank.ROOK,R.drawable.whiterook))
-            pieceBox.add(ChessPiace(0+i*7,7,ChessPlayer.BLACK,ChessRank.ROOK,R.drawable.blackrook))
+            pieceBox.add(ChessPiece(0+i*7,0,ChessPlayer.WHITE,ChessRank.ROOK,R.drawable.whiterook))
+            pieceBox.add(ChessPiece(0+i*7,7,ChessPlayer.BLACK,ChessRank.ROOK,R.drawable.blackrook))
 
-            pieceBox.add(ChessPiace(1+i*5,0,ChessPlayer.WHITE,ChessRank.KNIGHT,R.drawable.whiteknight))
-            pieceBox.add(ChessPiace(1+i*5,7,ChessPlayer.BLACK,ChessRank.KNIGHT,R.drawable.blackknight))
+            pieceBox.add(ChessPiece(1+i*5,0,ChessPlayer.WHITE,ChessRank.KNIGHT,R.drawable.whiteknight))
+            pieceBox.add(ChessPiece(1+i*5,7,ChessPlayer.BLACK,ChessRank.KNIGHT,R.drawable.blackknight))
 
-            pieceBox.add(ChessPiace(2+i*3,0,ChessPlayer.WHITE,ChessRank.BISHOP,R.drawable.whitebishop))
-            pieceBox.add(ChessPiace(2+i*3,7,ChessPlayer.BLACK,ChessRank.BISHOP,R.drawable.blackbishop))
+            pieceBox.add(ChessPiece(2+i*3,0,ChessPlayer.WHITE,ChessRank.BISHOP,R.drawable.whitebishop))
+            pieceBox.add(ChessPiece(2+i*3,7,ChessPlayer.BLACK,ChessRank.BISHOP,R.drawable.blackbishop))
         }
         for (i in 0..7){
-            pieceBox.add(ChessPiace(i,1,ChessPlayer.WHITE,ChessRank.PAWN,R.drawable.whitepawn))
-            pieceBox.add(ChessPiace(i,6,ChessPlayer.BLACK,ChessRank.PAWN,R.drawable.blackpawn))
+            pieceBox.add(ChessPiece(i,1,ChessPlayer.WHITE,ChessRank.PAWN,R.drawable.whitepawn))
+            pieceBox.add(ChessPiece(i,6,ChessPlayer.BLACK,ChessRank.PAWN,R.drawable.blackpawn))
         }
 
-        pieceBox.add(ChessPiace(4,0,ChessPlayer.WHITE,ChessRank.KING,R.drawable.whiteking))
-        pieceBox.add(ChessPiace(4,7,ChessPlayer.BLACK,ChessRank.KING,R.drawable.blackking))
-        pieceBox.add(ChessPiace(3,0,ChessPlayer.WHITE,ChessRank.QUEEN,R.drawable.whitequeen))
-        pieceBox.add(ChessPiace(3,7,ChessPlayer.BLACK,ChessRank.QUEEN,R.drawable.blackqueen))
+        pieceBox.add(ChessPiece(4,0,ChessPlayer.WHITE,ChessRank.KING,R.drawable.whiteking))
+        pieceBox.add(ChessPiece(4,7,ChessPlayer.BLACK,ChessRank.KING,R.drawable.blackking))
+        pieceBox.add(ChessPiece(3,0,ChessPlayer.WHITE,ChessRank.QUEEN,R.drawable.whitequeen))
+        pieceBox.add(ChessPiece(3,7,ChessPlayer.BLACK,ChessRank.QUEEN,R.drawable.blackqueen))
 
     }
-    fun piaceAt(col:Int, row:Int):ChessPiace? {
+    fun pieceAt(col:Int, row:Int):ChessPiece? {
         for (piace in pieceBox){
             if (col==piace.col && row ==piace.row){
                 return piace
@@ -83,7 +72,7 @@ object ChessGame {
         for(row in 7 downTo 0) {
             desc += "$row"
             for (col in 0..7) {
-                val piece = piaceAt(col,row)
+                val piece = pieceAt(col,row)
                 if(piece==null){
                     desc += " ."
                 }

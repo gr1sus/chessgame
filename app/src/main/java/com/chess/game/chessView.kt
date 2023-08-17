@@ -53,7 +53,7 @@ class chessView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
     var chessDelegate: chessDelegate? = null
 
     private val bitmaps = mutableMapOf<Int, Bitmap>()
-    private var movingPiece: ChessPiace? = null
+    private var movingPiece: ChessPiece? = null
     private var movingpieceBitmap: Bitmap? = null
 
     private fun loadBitmaps() {
@@ -91,7 +91,7 @@ class chessView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                 fromCol = ((event.x - originX) / cellSide).toInt()
                 fromRow = 7 - ((event.y - originY) / cellSide).toInt()
 
-                chessDelegate?.piaceAt(fromCol, fromRow)?.let {
+                chessDelegate?.pieceAt(fromCol, fromRow)?.let {
                     movingPiece = it
                     movingpieceBitmap = bitmaps[it.resID]
                 }
@@ -107,7 +107,10 @@ class chessView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                 var toCol = ((event.x - originX) / cellSide).toInt()
                 var toRow = 7 - ((event.y - originY) / cellSide).toInt()
                 Log.d(TAG, "from($fromCol,$fromRow) to ($toCol,$toRow)")
-                if(fromCol!=toCol||fromRow!=toRow){
+                if(toCol>=8 || toRow>=8 ||toCol<=-1 || toRow<=-1){
+                    movingPiece=null
+                }
+                else if(fromCol!=toCol||fromRow!=toRow){
                 chessDelegate?.movePiece(fromCol, fromRow, toCol, toRow)
                 }
                 movingPiece = null
@@ -126,7 +129,7 @@ class chessView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                     chessDelegate?.piaceAt(col, row)
                         ?.let { drawPieceAt(canvas, col, row, it.resID) }
                 }*/
-                chessDelegate?.piaceAt(col, row)
+                chessDelegate?.pieceAt(col, row)
                     ?.let {
                     if(it!=movingPiece){
                         drawPieceAt(canvas, col, row, it.resID) }

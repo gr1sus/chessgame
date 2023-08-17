@@ -58,8 +58,8 @@ class MainActivity : AppCompatActivity(), chessDelegate {
 
         }
     }
-    override fun piaceAt(col: Int, row: Int): ChessPiace? {
-        return ChessGame.piaceAt(col, row)
+    override fun pieceAt(col: Int, row: Int): ChessPiece? {
+        return ChessGame.pieceAt(col, row)
     }
 
     override fun movePiece(fromCol: Int, fromRow: Int, toCol: Int, toRow: Int) {
