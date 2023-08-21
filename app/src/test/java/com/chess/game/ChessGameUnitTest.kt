@@ -5,6 +5,13 @@ import org.junit.Assert.*
 class ChessGameUnitTest  {
 
     @Test
+    fun clear(){
+        assertNotNull(ChessGame.pieceAt(Square(0,0)))
+        ChessGame.clear()
+        assertNull(ChessGame.pieceAt(Square(0,0)))
+    }
+
+    @Test
     fun toString_isCorrect() {
         println(ChessGame)
         assertTrue(ChessGame.toString().contains("0 r n b q k b n r"))
