@@ -50,7 +50,7 @@ class chessView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         R.drawable.blackpawn
     )
 
-    var chessDelegate: chessDelegate? = null
+    var chessDelegate: ChessDelegate? = null
 
     private val bitmaps = mutableMapOf<Int, Bitmap>()
     private var movingPiece: ChessPiece? = null
@@ -91,7 +91,7 @@ class chessView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                 fromCol = ((event.x - originX) / cellSide).toInt()
                 fromRow = 7 - ((event.y - originY) / cellSide).toInt()
 
-                chessDelegate?.pieceAt(fromCol, fromRow)?.let {
+                chessDelegate?.pieceAt(Square(fromCol, fromRow))?.let {
                     movingPiece = it
                     movingpieceBitmap = bitmaps[it.resID]
                 }
@@ -111,7 +111,7 @@ class chessView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                     movingPiece=null
                 }
                 else if(fromCol!=toCol||fromRow!=toRow){
-                chessDelegate?.movePiece(fromCol, fromRow, toCol, toRow)
+                chessDelegate?.movePiece(Square(fromCol, fromRow) ,Square(toCol, toRow))
                 }
                 movingPiece = null
                 movingpieceBitmap = null
@@ -123,13 +123,13 @@ class chessView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
     }
 
     private fun drawPieces(canvas: Canvas) {
-        for (row in 0..7) {
-            for (col in 0..7) {
+        for (row in 0 until 8) {
+            for (col in 0 until 8) {
                 /*if (row != fromRow || col != fromCol) {
                     chessDelegate?.piaceAt(col, row)
                         ?.let { drawPieceAt(canvas, col, row, it.resID) }
                 }*/
-                chessDelegate?.pieceAt(col, row)
+                chessDelegate?.pieceAt(Square(col,row) )
                     ?.let {
                     if(it!=movingPiece){
                         drawPieceAt(canvas, col, row, it.resID) }
@@ -173,8 +173,8 @@ class chessView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
 
 
     private fun drawChessBoard(canvas: Canvas) {
-        for (j in 0..7) {
-            for (i in 0..7) {
+        for (j in 0 until 8) {
+            for (i in 0 until 8) {
                 paint.color = if ((i + j) % 2 == 0) lightColor else blackColor
                 canvas.drawRect(
                     originX + i * cellSide,

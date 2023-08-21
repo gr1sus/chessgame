@@ -11,9 +11,11 @@ object ChessGame {
 
     }
 
+    fun movePiece(from:Square,to:Square){
+        movePiece(from.col,from.row,to.col,to.row)
+    }
 
-
-    fun movePiece(fromCol:Int,fromRow:Int,toCol:Int,toRow:Int){
+   private fun movePiece(fromCol:Int,fromRow:Int,toCol:Int,toRow:Int){
         if(fromCol==toCol && fromRow==toRow){
              return
         }
@@ -38,27 +40,32 @@ object ChessGame {
         pieceBox.removeAll(pieceBox)
 
         for (i in 0..1){
-            pieceBox.add(ChessPiece(0+i*7,0,ChessPlayer.WHITE,ChessRank.ROOK,R.drawable.whiterook))
-            pieceBox.add(ChessPiece(0+i*7,7,ChessPlayer.BLACK,ChessRank.ROOK,R.drawable.blackrook))
+            pieceBox.add(ChessPiece(0+i*7,0,ChessPlayer.WHITE,ChessMan.ROOK,R.drawable.whiterook))
+            pieceBox.add(ChessPiece(0+i*7,7,ChessPlayer.BLACK,ChessMan.ROOK,R.drawable.blackrook))
 
-            pieceBox.add(ChessPiece(1+i*5,0,ChessPlayer.WHITE,ChessRank.KNIGHT,R.drawable.whiteknight))
-            pieceBox.add(ChessPiece(1+i*5,7,ChessPlayer.BLACK,ChessRank.KNIGHT,R.drawable.blackknight))
+            pieceBox.add(ChessPiece(1+i*5,0,ChessPlayer.WHITE,ChessMan.KNIGHT,R.drawable.whiteknight))
+            pieceBox.add(ChessPiece(1+i*5,7,ChessPlayer.BLACK,ChessMan.KNIGHT,R.drawable.blackknight))
 
-            pieceBox.add(ChessPiece(2+i*3,0,ChessPlayer.WHITE,ChessRank.BISHOP,R.drawable.whitebishop))
-            pieceBox.add(ChessPiece(2+i*3,7,ChessPlayer.BLACK,ChessRank.BISHOP,R.drawable.blackbishop))
+            pieceBox.add(ChessPiece(2+i*3,0,ChessPlayer.WHITE,ChessMan.BISHOP,R.drawable.whitebishop))
+            pieceBox.add(ChessPiece(2+i*3,7,ChessPlayer.BLACK,ChessMan.BISHOP,R.drawable.blackbishop))
         }
         for (i in 0..7){
-            pieceBox.add(ChessPiece(i,1,ChessPlayer.WHITE,ChessRank.PAWN,R.drawable.whitepawn))
-            pieceBox.add(ChessPiece(i,6,ChessPlayer.BLACK,ChessRank.PAWN,R.drawable.blackpawn))
+            pieceBox.add(ChessPiece(i,1,ChessPlayer.WHITE,ChessMan.PAWN,R.drawable.whitepawn))
+            pieceBox.add(ChessPiece(i,6,ChessPlayer.BLACK,ChessMan.PAWN,R.drawable.blackpawn))
         }
 
-        pieceBox.add(ChessPiece(4,0,ChessPlayer.WHITE,ChessRank.KING,R.drawable.whiteking))
-        pieceBox.add(ChessPiece(4,7,ChessPlayer.BLACK,ChessRank.KING,R.drawable.blackking))
-        pieceBox.add(ChessPiece(3,0,ChessPlayer.WHITE,ChessRank.QUEEN,R.drawable.whitequeen))
-        pieceBox.add(ChessPiece(3,7,ChessPlayer.BLACK,ChessRank.QUEEN,R.drawable.blackqueen))
+        pieceBox.add(ChessPiece(4,0,ChessPlayer.WHITE,ChessMan.KING,R.drawable.whiteking))
+        pieceBox.add(ChessPiece(4,7,ChessPlayer.BLACK,ChessMan.KING,R.drawable.blackking))
+        pieceBox.add(ChessPiece(3,0,ChessPlayer.WHITE,ChessMan.QUEEN,R.drawable.whitequeen))
+        pieceBox.add(ChessPiece(3,7,ChessPlayer.BLACK,ChessMan.QUEEN,R.drawable.blackqueen))
 
     }
-    fun pieceAt(col:Int, row:Int):ChessPiece? {
+
+    fun pieceAt(square: Square): ChessPiece? {
+        return pieceAt(square.col,square.row)
+    }
+
+    private fun pieceAt(col:Int, row:Int):ChessPiece? {
         for (piace in pieceBox){
             if (col==piace.col && row ==piace.row){
                 return piace
@@ -67,28 +74,45 @@ object ChessGame {
         return null
     }
 
+    fun pgnboard():String{
+        var desc = "  a b c d e f g h \n"
+        desc += ""
+        for(row in 7 downTo 0) {
+            desc += "${row+1}"
+            desc+= boardRow(row)
+            desc += " ${row+1}"
+            desc+="\n"
+        }
+        desc += "  a b c d e f g h \n"
+        return desc
+    }
     override fun toString(): String {
-        var desc = ""
+        var desc = "\n"
         for(row in 7 downTo 0) {
             desc += "$row"
-            for (col in 0..7) {
-                desc +=" "
-                desc+=pieceAt(col,row)?.let{
-                    val white=it.player == ChessPlayer.WHITE
-                    when (it.rank){
-                        ChessRank.KING -> if (white)"k" else "K"
-                        ChessRank.QUEEN -> if (white)"q" else "Q"
-                        ChessRank.ROOK -> if (white)"r" else "R"
-                        ChessRank.KNIGHT -> if (white)"n" else "N"
-                        ChessRank.BISHOP -> if (white)"b" else "B"
-                        ChessRank.PAWN -> if (white)"p" else "P"
-                    }
-                } ?: "."
-            }
+            desc+= boardRow(row)
             desc+="\n"
+        }
+            desc += "  0 1 2 3 4 5 6 7 \n"
+            return desc
+    }
+    private fun boardRow(row:Int):String{
+        var desc = ""
+        for (col in 0 until 8) {
+            desc+= " "
+            desc+=pieceAt(col,row)?.let{
+                val white=it.player == ChessPlayer.WHITE
+                when (it.rank){
+                    ChessMan.KING -> if (white)"k" else "K"
+                    ChessMan.QUEEN -> if (white)"q" else "Q"
+                    ChessMan.ROOK -> if (white)"r" else "R"
+                    ChessMan.KNIGHT -> if (white)"n" else "N"
+                    ChessMan.BISHOP -> if (white)"b" else "B"
+                    ChessMan.PAWN -> if (white)"p" else "P"
+                }
+            } ?: "."
 
         }
-            desc += "  0 1 2 3 4 5 6 7 "
-            return desc
+        return desc
     }
 }

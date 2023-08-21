@@ -12,7 +12,7 @@ import java.util.concurrent.Executors
 
 const val TAG = "Andrii"
 
-class MainActivity : AppCompatActivity(), chessDelegate {
+class MainActivity : AppCompatActivity(), ChessDelegate {
 
 
     private var printWriter:PrintWriter?=null
@@ -42,37 +42,34 @@ class MainActivity : AppCompatActivity(), chessDelegate {
 
 
         connectButton.setOnClickListener {
-            Executors.newSingleThreadExecutor().execute {
-                val socket = Socket("192.168.0.107", 50000) // 192.168.0.107
-                val scanner = Scanner(socket.getInputStream())
-                printWriter = PrintWriter(socket.getOutputStream(),true)
-                while (scanner.hasNextLine()){
-//                    Log.d(TAG,"${scanner.nextLine()}")
-                    val move= scanner.nextLine().split(",").map { it.toInt() }
-                    runOnUiThread{
-                        movePiece(move[0],move[1],move[2],move[3])
-                    }
-                }
-            }
-
+//            Executors.newSingleThreadExecutor().execute {
+//                val socket = Socket("192.168.0.107", 50000) // 192.168.0.107
+//                val scanner = Scanner(socket.getInputStream())
+//                printWriter = PrintWriter(socket.getOutputStream(),true)
+//                while (scanner.hasNextLine()){
+////                    Log.d(TAG,"${scanner.nextLine()}")
+//                    val move= scanner.nextLine().split(",").map { it.toInt() }
+//                    runOnUiThread{
+//                        movePiece(move[0],move[1],move[2],move[3])
+//                    }
+//                }
+//            }
 
         }
     }
-    override fun pieceAt(col: Int, row: Int): ChessPiece? {
-        return ChessGame.pieceAt(col, row)
+    override fun pieceAt(square: Square): ChessPiece? {
+        return ChessGame.pieceAt(square)
     }
 
-    override fun movePiece(fromCol: Int, fromRow: Int, toCol: Int, toRow: Int) {
-        if(fromCol==toCol && fromRow==toRow){
-            return
-        }
-        ChessGame.movePiece(fromCol, fromRow, toCol, toRow)
+    override fun movePiece(from: Square,to:Square) {
+
+        ChessGame.movePiece(from,to)
         val chessView = findViewById<chessView>(R.id.chess_view)
         chessView.invalidate()
-        printWriter?.let {
+        /*printWriter?.let {
             val moveStr = "$fromCol,$fromRow,$toCol,$toRow"
             printWriter?.println(moveStr)
-        }
+        }*/
 
     }
 }
