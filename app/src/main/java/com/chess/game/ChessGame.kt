@@ -72,14 +72,10 @@ object ChessGame {
         for(row in 7 downTo 0) {
             desc += "$row"
             for (col in 0..7) {
-                val piece = pieceAt(col,row)
-                if(piece==null){
-                    desc += " ."
-                }
-                else {
-                    val white=piece.player == ChessPlayer.WHITE
-                    desc+=" "
-                    desc += when (piece.rank){
+                desc +=" "
+                desc+=pieceAt(col,row)?.let{
+                    val white=it.player == ChessPlayer.WHITE
+                    when (it.rank){
                         ChessRank.KING -> if (white)"k" else "K"
                         ChessRank.QUEEN -> if (white)"q" else "Q"
                         ChessRank.ROOK -> if (white)"r" else "R"
@@ -87,7 +83,7 @@ object ChessGame {
                         ChessRank.BISHOP -> if (white)"b" else "B"
                         ChessRank.PAWN -> if (white)"p" else "P"
                     }
-                }
+                } ?: "."
             }
             desc+="\n"
 

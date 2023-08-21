@@ -28,6 +28,13 @@ class ChessGameUnitTest  {
         assertNotNull(ChessGame.pieceAt(0, 0))
         assertEquals(ChessPlayer.WHITE, ChessGame.pieceAt(0, 0)?.player)
     }
+    @Test
 
+    fun elvisOperator(){
+        val x:Int? = null
+        val y:Int?=2
+        assertEquals(3,x?:3)
+        assertEquals(2,y ?:3)
+    }
 
 }
