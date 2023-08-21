@@ -33,6 +33,21 @@ object ChessGame {
         }
         return false
     }
+    fun canBishopMove(from: Square,to: Square):Boolean{
+        if (abs(from.col-to.col)==abs(from.row-to.row))return isClearDiagonally(from,to)
+        return false
+    }
+
+    private fun isClearDiagonally(from: Square,to: Square):Boolean{
+        if (abs(from.col-to.col)!=abs(from.row-to.row)) return false
+        val gap = abs(from.col - to.col)-1
+        for (i in 1..gap){
+            val nextCol= if(to.col>from.col) from.col+i else from.col-i
+            val nextRow= if (to.row>from.row)from.row+i else from.row-i
+            if (pieceAt(nextCol,nextRow)!=null) return false
+        }
+        return true
+    }
     private fun isClearVerticallyBetween(from: Square, to: Square): Boolean{
         if (from.col != to.col) return false
         val gapV = abs(from.row - to.row) - 1
@@ -60,12 +75,13 @@ object ChessGame {
         return true
     }
 
-    fun canMove(from: Square, to: Square): Boolean {
+    private fun canMove(from: Square, to: Square): Boolean {
         if (from.col == to.col && from.row == to.row) return false
         val movingPiece = pieceAt(from) ?: return false
         when (movingPiece.rank) {
             ChessMan.KNIGHT -> return canKnightMove(from, to)
             ChessMan.ROOK -> return canRookMove(from, to)
+            ChessMan.BISHOP -> return canBishopMove(from,to)
             else -> {}
         }
         return true // FIXME
