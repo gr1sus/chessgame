@@ -37,6 +37,46 @@ object ChessGame {
         if (abs(from.col-to.col)==abs(from.row-to.row))return isClearDiagonally(from,to)
         return false
     }
+    fun canQueenMove(from: Square,to: Square):Boolean{
+        if (isClearDiagonally(from,to)||isClearVerticallyBetween(from,to)||isClearHorizontallyBetween(from, to))return true
+        return false
+    }
+    fun canKingMove(from: Square,to: Square):Boolean{
+        val deltaCol=abs(from.col-to.col)
+        val deltaRow=abs(from.row-to.row)
+        if (canQueenMove(from, to)){
+            return deltaCol==1&& deltaRow==1 || deltaCol+deltaRow==1
+        }
+        return false
+    }
+    fun canPawnMove(from: Square,to: Square):Boolean{
+        val deltaCol = abs(from.col - to.col)
+        val deltaRow = abs(from.row - to.row)
+
+        val movingPiece = pieceAt(from) ?: return false
+        val player = movingPiece.player
+
+        if (deltaCol == 0) {
+            // Moving forward
+            val direction = if (player == ChessPlayer.WHITE) 1 else -1
+            if ((deltaRow == 1 && to.row - from.row == direction) ||
+                (deltaRow == 2 && from.row == 1 && to.row - from.row == direction * 2) ||
+                (deltaRow == 2 && from.row == 6 && to.row - from.row == direction * 2)
+            ) {
+                if (pieceAt(to) == null) {
+                    return true
+                }
+            }
+        } else if (deltaCol == 1 && deltaRow == 1) {
+            // Diagonal attack
+            val targetPiece = pieceAt(to)
+            if (targetPiece != null && targetPiece.player != player) {
+                return true
+            }
+        }
+        return false
+    }
+
 
     private fun isClearDiagonally(from: Square,to: Square):Boolean{
         if (abs(from.col-to.col)!=abs(from.row-to.row)) return false
@@ -78,13 +118,15 @@ object ChessGame {
     private fun canMove(from: Square, to: Square): Boolean {
         if (from.col == to.col && from.row == to.row) return false
         val movingPiece = pieceAt(from) ?: return false
-        when (movingPiece.rank) {
-            ChessMan.KNIGHT -> return canKnightMove(from, to)
-            ChessMan.ROOK -> return canRookMove(from, to)
-            ChessMan.BISHOP -> return canBishopMove(from,to)
-            else -> {}
+        return when (movingPiece.rank) {
+            ChessMan.KNIGHT -> canKnightMove(from, to)
+            ChessMan.ROOK -> canRookMove(from, to)
+            ChessMan.BISHOP -> canBishopMove(from,to)
+            ChessMan.QUEEN -> canQueenMove(from, to)
+            ChessMan.KING-> canKingMove(from, to)
+            ChessMan.PAWN-> canPawnMove(from, to)
         }
-        return true // FIXME
+
     }
 
     fun movePiece(from: Square, to: Square) {
