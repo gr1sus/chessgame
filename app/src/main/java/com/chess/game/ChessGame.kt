@@ -3,7 +3,7 @@ package com.chess.game
 import kotlin.math.abs
 
 object ChessGame {
-
+    private var currentPlayer = ChessPlayer.WHITE
     private var pieceBox = mutableSetOf<ChessPiece>()
 
 
@@ -22,26 +22,47 @@ object ChessGame {
     }
 
     fun canKnightMove(from: Square, to: Square): Boolean {
+        val movingPiece = pieceAt(from) ?: return false
         return abs(from.col - to.col) == 2 && abs(from.row - to.row) == 1 || abs(from.col - to.col) == 1 && abs(
             from.row - to.row
-        ) == 2
+        ) == 2 &&  movingPiece.player == currentPlayer
     }
 
     fun canRookMove(from: Square, to: Square): Boolean {
+        val movingPiece = pieceAt(from) ?: return false
+
+        if (movingPiece.player != currentPlayer) {
+            return false
+        }
         if (from.col == to.col && isClearVerticallyBetween(from,to)|| from.row == to.row && isClearHorizontallyBetween(from, to) ) {
              return true
         }
         return false
     }
     fun canBishopMove(from: Square,to: Square):Boolean{
+        val movingPiece = pieceAt(from) ?: return false
+
+        if (movingPiece.player != currentPlayer) {
+            return false
+        }
         if (abs(from.col-to.col)==abs(from.row-to.row))return isClearDiagonally(from,to)
         return false
     }
     fun canQueenMove(from: Square,to: Square):Boolean{
+        val movingPiece = pieceAt(from) ?: return false
+
+        if (movingPiece.player != currentPlayer) {
+            return false
+        }
         if (isClearDiagonally(from,to)||isClearVerticallyBetween(from,to)||isClearHorizontallyBetween(from, to))return true
         return false
     }
     fun canKingMove(from: Square,to: Square):Boolean{
+        val movingPiece = pieceAt(from) ?: return false
+
+        if (movingPiece.player != currentPlayer) {
+            return false
+        }
         val deltaCol=abs(from.col-to.col)
         val deltaRow=abs(from.row-to.row)
         if (canQueenMove(from, to)){
@@ -55,9 +76,12 @@ object ChessGame {
 
         val movingPiece = pieceAt(from) ?: return false
         val player = movingPiece.player
+        if (movingPiece.player != currentPlayer) {
+            return false
+        }
 
         if (deltaCol == 0) {
-            // Moving forward
+
             val direction = if (player == ChessPlayer.WHITE) 1 else -1
             if ((deltaRow == 1 && to.row - from.row == direction) ||
                 (deltaRow == 2 && from.row == 1 && to.row - from.row == direction * 2) ||
@@ -68,7 +92,7 @@ object ChessGame {
                 }
             }
         } else if (deltaCol == 1 && deltaRow == 1) {
-            // Diagonal attack
+
             val targetPiece = pieceAt(to)
             if (targetPiece != null && targetPiece.player != player) {
                 return true
@@ -131,7 +155,10 @@ object ChessGame {
 
     fun movePiece(from: Square, to: Square) {
         if (canMove(from, to)) {
+
             movePiece(from.col, from.row, to.col, to.row)
+            currentPlayer = if (currentPlayer == ChessPlayer.WHITE) ChessPlayer.BLACK else ChessPlayer.WHITE
+
         }
     }
 
@@ -156,7 +183,7 @@ object ChessGame {
 
     fun reset() {
         clear()
-
+        currentPlayer=ChessPlayer.WHITE
         for (i in 0 until 2) {
             addPiece(
                 ChessPiece(

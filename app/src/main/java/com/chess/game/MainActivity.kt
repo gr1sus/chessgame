@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import java.io.PrintWriter
 import java.net.Socket
 import java.util.Scanner
@@ -27,7 +28,11 @@ class MainActivity : AppCompatActivity(), ChessDelegate {
         val resetButton: Button = findViewById(R.id.reset_button)
         val listenButton = findViewById<Button>(R.id.listen_button)
         val connectButton = findViewById<Button>(R.id.connect_button)
+        val backButton=findViewById<ImageButton>(R.id.imageButton2)
 
+        backButton.setOnClickListener{
+            finish()
+        }
 
         resetButton.setOnClickListener {
             ChessGame.reset()

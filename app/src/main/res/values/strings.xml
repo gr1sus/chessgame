@@ -3,4 +3,6 @@
     <string name="button_reset">RESET</string>
     <string name="button_listen">LISTEN</string>
     <string name="button_connect">CONNECT</string>
+    <string name="text_help">In this game you can play chess. If you want to reset your game please click the button to reset.  If you want to close the game click on the button with arrow.</string>
+    <string name="text_titles">Thank you for reading this “titles” and using our app! NO  YOU’RE BREATHTAKING!  </string>
 </resources>

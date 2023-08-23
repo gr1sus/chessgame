@@ -9,10 +9,26 @@
     android:gravity="center"
     android:orientation="vertical">
 
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        style="@style/Widget.AppCompat.ImageButton"
+        android:layout_width="69dp"
+        android:layout_height="53dp"
+        android:backgroundTint="#00E8E3E3"
+        android:contentDescription="imageButton"
+        android:layout_gravity="fill"
+        android:translationY="-20pt"
+        android:src="?attr/actionModeCloseDrawable" />
+
+
+
     <com.chess.game.chessView
         android:id="@+id/chess_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
 
     </com.chess.game.chessView>
 
